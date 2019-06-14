@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/edt_username"
+        android:id="@+id/edt_nik"
         android:layout_width="295dp"
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
@@ -31,7 +31,7 @@
         android:layout_marginRight="8dp"
         android:background="@drawable/bg_input_dua"
         android:fontFamily="@font/mmedium"
-        android:hint="@string/username_label"
+        android:hint="@string/nik_label"
         android:inputType="text"
         android:lines="1"
         android:paddingLeft="12dp"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <EditText
-        android:id="@+id/edt_password"
+        android:id="@+id/edt_tanggal_lahir"
         android:layout_width="295dp"
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
@@ -51,14 +51,14 @@
         android:layout_marginRight="8dp"
         android:background="@drawable/bg_input_dua"
         android:fontFamily="@font/mmedium"
-        android:hint="@string/password_label"
-        android:inputType="textPassword"
+        android:hint="@string/tanggal_lahir_label"
+        android:inputType="text"
         android:lines="1"
         android:paddingLeft="12dp"
         android:textColor="@color/bluePrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_username" />
+        app:layout_constraintTop_toBottomOf="@+id/edt_nik" />
 
     <Button
         android:id="@+id/btn_login"
@@ -76,7 +76,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_password" />
+        app:layout_constraintTop_toBottomOf="@+id/edt_tanggal_lahir" />
 
     <TextView
         android:layout_width="wrap_content"

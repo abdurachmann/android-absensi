@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">AbsensiWifi</string>
     <string name="absensi">Absensi</string>
-    <string name="username_label">Username</string>
-    <string name="password_label">Password</string>
+    <string name="nik_label">NIK</string>
+    <string name="tanggal_lahir_label">Tanggal Lahir</string>
     <string name="login">Login</string>
     <string name="company_label">PT. DINUS CIPTA MANDIRI</string>
     <string name="absen">Absen</string>
