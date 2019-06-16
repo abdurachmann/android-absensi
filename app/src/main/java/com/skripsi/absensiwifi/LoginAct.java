@@ -26,7 +26,7 @@ public class LoginAct extends AppCompatActivity {
     private DataService service;
 
     private EditText etNik;
-    private EditText etTanggalLahir;
+    private EditText etPassword;
     private Button btn_login;
 
     @Override
@@ -42,29 +42,29 @@ public class LoginAct extends AppCompatActivity {
     private void initListener() {
         btn_login = (Button) findViewById(R.id.btn_login);
         etNik = (EditText) findViewById(R.id.edt_nik);
-        etTanggalLahir = (EditText) findViewById(R.id.edt_tanggal_lahir);
+        etPassword = (EditText) findViewById(R.id.edt_password);
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String nik = etNik.getText().toString();
-                String tanggallahir = etTanggalLahir.getText().toString();
+                String password = etPassword.getText().toString();
 
                 if(isEmpty(nik))
                     etNik.setError("NIK tidak boleh kosong");
                 else
-                    Login(nik, tanggallahir);
+                    Login(nik, password);
 
-                if(isEmpty(tanggallahir))
-                    etTanggalLahir.setError("Tanggal Lahir tidak boleh kosong");
+                if(isEmpty(password))
+                    etPassword.setError("Password tidak boleh kosong");
                 else
-                    Login(nik, tanggallahir);
+                    Login(nik, password);
             }
         });
     }
 
-    private void Login(String nik, String tanggallahir) {
-        Call<BaseResponse> call = service.apiLogin(nik, tanggallahir);
+    private void Login(String nik, String password) {
+        Call<BaseResponse> call = service.apiLogin(nik, password);
 
         call.enqueue(new Callback<BaseResponse>() {
             @Override

@@ -18,7 +18,7 @@ public interface DataService {
     @POST(Endpoint.API_LOGIN)
     Call<BaseResponse> apiLogin(
             @Field("nik") String nik,
-            @Field("tanggallahir") String tanggallahir
+            @Field("password") String password
     );
 
     @GET(Endpoint.API_PROFILE)
