@@ -97,6 +97,7 @@
                 android:textColor="@color/grayprimary" />
 
             <TextView
+                android:id="@+id/tv_nik"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-20dp"
@@ -116,6 +117,7 @@
                 android:textColor="@color/grayprimary" />
 
             <TextView
+                android:id="@+id/tv_nama"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-20dp"
@@ -135,6 +137,7 @@
                 android:textColor="@color/grayprimary" />
 
             <TextView
+                android:id="@+id/tv_tanggal_lahir"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-20dp"
@@ -154,6 +157,7 @@
                 android:textColor="@color/grayprimary" />
 
             <TextView
+                android:id="@+id/tv_alamat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-20dp"

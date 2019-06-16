@@ -1,13 +1,11 @@
-/*-- package com.skripsi.absensiwifi.network;
-
-import com.skripsi.absensiwifi.BuildConfig;
+package com.skripsi.absensiwifi;
 
 public class Endpoint {
-    public static final String API_URL = BuildConfig.BASE_URL;
-    public static final String API_CREATE = "/crudandroid/index.php/data/add";
-    public static final String API_READ = "/crudandroid/index.php/data/";
-    public static final String API_UPDATE = "/crudandroid/index.php/data/edit/";
-    public static final String API_DELETE = "/crudandroid/index.php/data/delete/";
-    public static final String API_UPLOAD = "/crudandroid/index.php/data/uploadimage/";
+    public static final String API_URL = "http://192.168.43.116/skripsi.absensi/api/";
 
-} --*/
+    public static final String API_LOGIN = "login";
+    public static final String API_PROFILE = "profile";
+    public static final String API_ABSEN = "absen";
+    public static final String API_HISTORY = "history";
+    public static final String API_SYNCGPS = "syncgps";
+}

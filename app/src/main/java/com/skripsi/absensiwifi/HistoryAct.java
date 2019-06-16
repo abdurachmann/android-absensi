@@ -1,20 +1,47 @@
 package com.skripsi.absensiwifi;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.skripsi.absensiwifi.adapter.DataHistoryAdapter;
+import com.skripsi.absensiwifi.model.DataHistory;
+import com.skripsi.absensiwifi.network.ServiceGenerator;
+import com.skripsi.absensiwifi.network.response.BaseResponse;
+import com.skripsi.absensiwifi.network.service.DataService;
+
 import java.util.Calendar;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HistoryAct extends AppCompatActivity {
     ImageView btn_back;
     EditText date, date_to;
     DatePickerDialog datePickerDialog;
+
+    private static final String TAG = HistoryAct.class.getSimpleName();
+
+    private RecyclerView rvData;
+    private DataHistoryAdapter adapter;
+    private DataService service;
+
+    public static void newInstance(Context context) {
+        Intent intent = new Intent(context, HistoryAct.class);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,5 +100,40 @@ public class HistoryAct extends AppCompatActivity {
                 finish();
             }
         });
+
+
+        // Get Data from API
+        initViews();
+
+        String nik = "P0001";
+
+        // Initialization adapter
+        adapter = new DataHistoryAdapter(this);
+        rvData.setLayoutManager(new LinearLayoutManager(this));
+        service = ServiceGenerator.createBaseService(this, DataService.class);
+
+        rvData.setAdapter(adapter);
+        loadData(nik);
+    }
+
+    private void loadData(String nik) {
+        Call<BaseResponse<List<DataHistory>>> call = service.apiHistory(nik);
+        call.enqueue(new Callback<BaseResponse<List<DataHistory>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<List<DataHistory>>> call, Response<BaseResponse<List<DataHistory>>> response) {
+                if (response.code() == 200) {
+                    adapter.addAll(response.body().getData());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<List<DataHistory>>> call, Throwable t) {
+                Log.e(TAG + ".error", t.toString());
+            }
+        });
+    }
+
+    private void initViews() {
+        rvData = (RecyclerView) findViewById(R.id.rv_data_history);
     }
 }
