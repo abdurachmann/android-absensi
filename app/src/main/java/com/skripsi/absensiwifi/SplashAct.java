@@ -1,6 +1,8 @@
 package com.skripsi.absensiwifi;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,10 +40,28 @@ public class SplashAct extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // merubah activity ke activity lain
-                Intent gotologin = new Intent(SplashAct.this, LoginAct.class);
-                startActivity(gotologin);
-                finish();
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("USER_ACCESS", Context.MODE_PRIVATE); // 0 - for private mode
+
+            Class afterSplashAct = LoginAct.class;
+
+            // if user not login yet.
+            if (pref.getString("nik", "").isEmpty()) {
+                // use this only when you can't connect to the server
+                /*afterSplashAct = HomeAct.class;
+
+                SharedPreferences.Editor editor = pref.edit();
+
+                editor.putString("nik", "P0002");
+                editor.putString("nama", "Rangga");
+                editor.commit();*/
+            } else {
+                afterSplashAct = HomeAct.class;
+            }
+
+            // merubah activity ke activity lain
+            Intent gotosomewhere = new Intent(SplashAct.this, afterSplashAct);
+            startActivity(gotosomewhere);
+            finish();
 
             }
         }, 2000 ); // 2000 ms = 2s

@@ -1,19 +1,26 @@
 package com.skripsi.absensiwifi;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class HomeAct extends AppCompatActivity {
     ImageView btn_absen;
     LinearLayout btn_history, btn_profile;
+    TextView txtName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        txtName = findViewById(R.id.txtName);
         btn_absen = findViewById(R.id.btn_absen);
         btn_history = findViewById(R.id.btn_history);
         btn_profile = findViewById(R.id.btn_profile);
@@ -43,5 +50,17 @@ public class HomeAct extends AppCompatActivity {
                 finish();
             }
         });
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("USER_ACCESS", Context.MODE_PRIVATE); // 0 - for private mode
+        String user_name = pref.getString("nama", "");
+
+        if (user_name.isEmpty()) {
+            // merubah activity ke activity lain
+            Intent gotologin = new Intent(HomeAct.this, LoginAct.class);
+            startActivity(gotologin);
+            finish();
+        } else {
+            txtName.setText(user_name);
+        }
     }
 }

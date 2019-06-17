@@ -1,7 +1,9 @@
 package com.skripsi.absensiwifi;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -76,6 +78,13 @@ public class LoginAct extends AppCompatActivity {
 
                     if(returnedResponse.trim().equals("true")) {
                         Toast.makeText(LoginAct.this, "Berhasil", Toast.LENGTH_SHORT).show();
+
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("USER_ACCESS", Context.MODE_PRIVATE); // 0 - for private mode
+                        SharedPreferences.Editor editor = pref.edit();
+
+                        editor.putString("nik", LoginObject.nik);
+                        editor.putString("nama", LoginObject.nama);
+                        editor.commit();
 
                         Intent intent = new Intent(LoginAct.this, HomeAct.class);
                         startActivity(intent);
