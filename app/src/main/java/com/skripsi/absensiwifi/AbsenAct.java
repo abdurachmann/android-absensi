@@ -19,26 +19,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.gson.JsonElement;
-import com.skripsi.absensiwifi.model.DataHistory;
 import com.skripsi.absensiwifi.network.ServiceGenerator;
-import com.skripsi.absensiwifi.network.response.BaseResponse;
 import com.skripsi.absensiwifi.network.service.DataService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Field;
 
 
 public class AbsenAct extends AppCompatActivity {
@@ -123,16 +118,20 @@ public class AbsenAct extends AppCompatActivity {
 
     private void absen(boolean isMasuk) {
         if (!isPermitted) {
-            AlertDialog alertDialog = new AlertDialog.Builder(AbsenAct.this).create();
-            alertDialog.setTitle("Absen Gagal");
-            alertDialog.setMessage("Anda tidak dapat melakukan absen, lokasi atau alamat MAC tidak sesuai.");
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alertDialog.show();
+            showMessage(
+                "Absen Gagal",
+                "Anda tidak dapat melakukan absen, lokasi atau alamat MAC tidak sesuai."
+            );
+        }
+
+        if (currentLocation == null) {
+            Toast.makeText(
+                AbsenAct.this,
+                "Lokasi anda tidak diketahui, pastikan anda menyalakan GPS.",
+                Toast.LENGTH_SHORT
+            ).show();
+
+            return;
         }
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("USER_ACCESS", Context.MODE_PRIVATE); // 0 - for private mode
@@ -140,6 +139,8 @@ public class AbsenAct extends AppCompatActivity {
         String nik = pref.getString("nik", "");
         String latitude = String.valueOf(currentLocation.getLatitude());
         String longitude = String.valueOf(currentLocation.getLongitude());
+
+        System.out.println()
 
         service.apiAbsen(nik, macAddress, latitude, longitude);
 
@@ -149,30 +150,6 @@ public class AbsenAct extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
-    }
-
-    private class AbsensiLocationListener implements LocationListener {
-        @Override
-        public void onLocationChanged(Location _currentLocation) {
-            currentLocation = _currentLocation;
-
-            validateStates();
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            System.out.printf("GPS status: %d.\n", status);
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-            System.out.printf("Your GPS is enabled.\n");
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-            System.out.printf("Your GPS is disabled.\n");
-        }
     }
 
     private void getOfficeData() {
@@ -226,8 +203,10 @@ public class AbsenAct extends AppCompatActivity {
     }
 
     private void validateStates() {
-        if (currentLocation == null)
+        if (currentLocation == null) {
+            isPermitted = false;
             return;
+        }
 
         Location companyLocation = new Location("");
         companyLocation.setLatitude(officeLatitude);
@@ -276,11 +255,55 @@ public class AbsenAct extends AppCompatActivity {
         btn_masuk.setClickable(true);
         btn_keluar.setClickable(true);
 
+        System.out.println("Your distance from given office coordinate is: "+ distance +" m");
+
         btn_masuk.getBackground().setAlpha(255);
         btn_keluar.getBackground().setAlpha(255);
         btn_absen_masuk.setAlpha(1.0f);
         btn_absen_keluar.setAlpha(1.0f);
         txt_btn_masuk.setAlpha(1.0f);
         txt_btn_keluar.setAlpha(1.0f);
+    }
+
+    private void showMessage(String title, String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(AbsenAct.this).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        alertDialog.show();
+    }
+
+    private class AbsensiLocationListener implements LocationListener {
+        @Override
+        public void onLocationChanged(Location _currentLocation) {
+            currentLocation = _currentLocation;
+
+            if (currentLocation == null) {
+                System.out.printf("Location might be disabled.\n");;
+            }
+
+            validateStates();
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            System.out.printf("GPS status: %d.\n", status);
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            System.out.printf("Your GPS is enabled.\n");
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            System.out.printf("Your GPS is disabled.\n");
+        }
     }
 }
