@@ -7,6 +7,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class HomeAct extends AppCompatActivity {
     ImageView btn_absen;
     LinearLayout btn_history, btn_profile;
@@ -43,5 +48,14 @@ public class HomeAct extends AppCompatActivity {
                 finish();
             }
         });
+
+//        try {
+//            JSONObject ProfileObject = new JSONObject(new Gson().toJson(response.body().getData()));
+//            st_nama = ProfileObject.getString("nama");
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        tvNama.setText(st_nama);
     }
 }

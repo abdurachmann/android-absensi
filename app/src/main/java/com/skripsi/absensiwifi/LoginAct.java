@@ -1,6 +1,7 @@
 package com.skripsi.absensiwifi;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ public class LoginAct extends AppCompatActivity {
 
     private static final String TAG = LoginAct.class.getSimpleName();
     private DataService service;
+    private Session session;
 
     private EditText etNik;
     private EditText etPassword;
@@ -63,10 +65,12 @@ public class LoginAct extends AppCompatActivity {
         });
     }
 
-    private void Login(String nik, String password) {
+    private void Login(final String nik, String password) {
         Call<BaseResponse> call = service.apiLogin(nik, password);
 
         call.enqueue(new Callback<BaseResponse>() {
+            private Context cntx;
+
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                 if(response.code() == 200) {
@@ -78,6 +82,11 @@ public class LoginAct extends AppCompatActivity {
                         Toast.makeText(LoginAct.this, "Berhasil", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(LoginAct.this, HomeAct.class);
+
+                        // Session
+                        session = new Session(cntx);
+                        session.setNik(nik);
+                        
                         startActivity(intent);
                     } else {
                         Toast.makeText(LoginAct.this, "Identitas tidak ditemukan", Toast.LENGTH_SHORT).show();
