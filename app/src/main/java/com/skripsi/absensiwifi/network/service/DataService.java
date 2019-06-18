@@ -36,7 +36,8 @@ public interface DataService {
             @Field("nik") String nik,
             @Field("macaddress") String macaddress,
             @Field("latitude") String latitude,
-            @Field("longitude") String longitude
+            @Field("longitude") String longitude,
+            @Field("jenisabsen") Boolean jenisabsen
     );
 
     @GET(Endpoint.API_HISTORY)

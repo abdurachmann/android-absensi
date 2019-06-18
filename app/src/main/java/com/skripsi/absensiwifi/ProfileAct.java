@@ -2,6 +2,7 @@ package com.skripsi.absensiwifi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -32,13 +33,10 @@ public class ProfileAct extends AppCompatActivity {
     public TextView tvTanggallahir;
     public TextView tvAlamat;
 
-    public String st_nik;
-    public String st_nama;
-    public String st_tanggallahir;
-    public String st_alamat;
-
-    private Session session;
-    private Context cntx;
+    public String strNik;
+    public String strNama;
+    public String strTanggalLahir;
+    public String strAlamat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +56,11 @@ public class ProfileAct extends AppCompatActivity {
         // Get Data from API
         initViews();
 
-        // Session
-        session = new Session(cntx);
-        String nik = session.getNik();
-
         // Initialization adapter
         service = ServiceGenerator.createBaseService(this, DataService.class);
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("USER_ACCESS", Context.MODE_PRIVATE); // 0 - for private mode
+        String nik = pref.getString("nik", "");
 
         loadData(nik);
     }
@@ -79,19 +76,19 @@ public class ProfileAct extends AppCompatActivity {
 
                     try {
                         JSONObject ProfileObject = new JSONObject(new Gson().toJson(response.body().getData()));
-                        st_nik = ProfileObject.getString("nik");
-                        st_nama = ProfileObject.getString("nama");
-                        st_tanggallahir = ProfileObject.getString("tanggallahir");
-                        st_alamat = ProfileObject.getString("alamat");
+                        strNik = ProfileObject.getString("nik");
+                        strNama = ProfileObject.getString("nama");
+                        strTanggalLahir = ProfileObject.getString("tanggallahir");
+                        strAlamat = ProfileObject.getString("alamat");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
 
-                    tvNik.setText(st_nik);
-                    tvNama.setText(st_nama);
-                    tvTanggallahir.setText(st_tanggallahir);
-                    tvAlamat.setText(st_alamat);
+                    tvNik.setText(strNik);
+                    tvNama.setText(strNama);
+                    tvTanggallahir.setText(strTanggalLahir);
+                    tvAlamat.setText(strAlamat);
                 }
             }
 

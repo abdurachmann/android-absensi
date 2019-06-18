@@ -21,7 +21,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.skripsi.absensiwifi.model.DataHistory;
 import com.skripsi.absensiwifi.network.ServiceGenerator;
@@ -44,6 +46,8 @@ import retrofit2.http.Field;
 public class AbsenAct extends AppCompatActivity {
     ImageView btn_back;
 
+    private static final String TAG = LoginAct.class.getSimpleName();
+
     private DataService service = ServiceGenerator.createBaseService(this, DataService.class);
 
     // office states
@@ -64,27 +68,27 @@ public class AbsenAct extends AppCompatActivity {
         setContentView(R.layout.activity_absen);
 
         // get device's mac address
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-
-        macAddress = wifiInfo.getMacAddress();
-
-        System.out.println("Mac Address: " + macAddress);
-
-        LocationListener locationListener = (LocationListener) new AbsensiLocationListener();
-
-        // get current location coordinates
-        LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2500, 0, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2500, 0, locationListener);
+//        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+//        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+//
+//        macAddress = wifiInfo.getMacAddress();
+//
+//        System.out.println("Mac Address: " + macAddress);
+//
+//        LocationListener locationListener = (LocationListener) new AbsensiLocationListener();
+//
+//        // get current location coordinates
+//        LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+//
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            return;
+//        }
+//
+//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2500, 0, locationListener);
+//        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2500, 0, locationListener);
 
         // get office data
-        getOfficeData();
+//        getOfficeData();
 
         btn_back = findViewById(R.id.btn_back);
         btn_back.setOnClickListener(new View.OnClickListener() {
@@ -138,12 +142,36 @@ public class AbsenAct extends AppCompatActivity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("USER_ACCESS", Context.MODE_PRIVATE); // 0 - for private mode
 
         String nik = pref.getString("nik", "");
-        String latitude = String.valueOf(currentLocation.getLatitude());
-        String longitude = String.valueOf(currentLocation.getLongitude());
+//        String latitude = String.valueOf(currentLocation.getLatitude());
+//        String longitude = String.valueOf(currentLocation.getLongitude());
 
-        service.apiAbsen(nik, macAddress, latitude, longitude);
+        String latitude = "57.34938493";
+        String longitude = "-1028.238748973";
 
-        // TODO: add status notification
+        Call<BaseResponse> call = service.apiAbsen(nik, macAddress, latitude, longitude, isMasuk);
+
+        call.enqueue(new Callback<BaseResponse>() {
+
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if(response.code() == 200) {
+
+                    BaseResponse AbsenObject = response.body();
+                    String returnedResponse = AbsenObject.status;
+
+                    if(returnedResponse.trim().equals("true")) {
+                        Toast.makeText(AbsenAct.this, "Berhasil Absen", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(AbsenAct.this, "Gagal Absen", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e(TAG + ".error", t.toString());
+            }
+        });
     }
 
     @Override

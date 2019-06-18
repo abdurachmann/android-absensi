@@ -56,16 +56,6 @@ public class HomeAct extends AppCompatActivity {
             }
         });
 
-<<<<<<< HEAD
-//        try {
-//            JSONObject ProfileObject = new JSONObject(new Gson().toJson(response.body().getData()));
-//            st_nama = ProfileObject.getString("nama");
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        tvNama.setText(st_nama);
-=======
         SharedPreferences pref = getApplicationContext().getSharedPreferences("USER_ACCESS", Context.MODE_PRIVATE); // 0 - for private mode
         String user_name = pref.getString("nama", "");
 
@@ -77,6 +67,5 @@ public class HomeAct extends AppCompatActivity {
         } else {
             txtName.setText(user_name);
         }
->>>>>>> 99e8772d36b30d86073730a73852a0ad5a8ae958
     }
 }
