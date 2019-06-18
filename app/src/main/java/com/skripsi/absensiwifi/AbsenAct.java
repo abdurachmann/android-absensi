@@ -45,6 +45,7 @@ public class AbsenAct extends AppCompatActivity {
     private DataService service = ServiceGenerator.createBaseService(this, DataService.class);
 
     // office states
+    private Location companyLocation = null;
     private double officeLatitude = 0.0d;
     private double officeLongitude = 0.0d;
     private float acceptedRadius = 50.0f; // maximum radius in meters from office coordinate
@@ -164,6 +165,16 @@ public class AbsenAct extends AppCompatActivity {
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
                 Log.e(TAG + ".error", t.toString());
+
+                companyLocation = null; // nulling the company location since we can't connect to the server
+
+                validateStates();
+
+                Toast.makeText(
+                        AbsenAct.this,
+                        "Tidak dapat terhubung ke jaringan sistem.",
+                        Toast.LENGTH_SHORT
+                ).show();
             }
         });
     }
@@ -200,6 +211,16 @@ public class AbsenAct extends AppCompatActivity {
 
                     System.out.printf("Latitude\t:%f\nLongitude\t:%f\n", officeLatitude, officeLongitude);
 
+                    companyLocation = new Location("");
+                    companyLocation.setLatitude(officeLatitude);
+                    companyLocation.setLongitude(officeLongitude);
+
+                    Toast.makeText(
+                            AbsenAct.this,
+                            "Sinkron berhasil.",
+                            Toast.LENGTH_SHORT
+                    ).show();
+
                     // validate user location and mac address
                     validateStates();
                 }
@@ -209,29 +230,22 @@ public class AbsenAct extends AppCompatActivity {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e(AbsenAct.class.getSimpleName() + ".error", t.toString());
 
-                AlertDialog alertDialog = new AlertDialog.Builder(AbsenAct.this).create();
-                alertDialog.setTitle("Sinkron Gagal");
-                alertDialog.setMessage("Gagal terhubung dengan jaringan sistem absensi.");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.show();
+                showMessage("Sinkron Gagal", "Gagal terhubung dengan jaringan sistem absensi.");
+
+                companyLocation = null;
+
+                validateStates();
             }
         });
     }
 
     private void validateStates() {
-        if (currentLocation == null) {
+        if (currentLocation == null || companyLocation == null) {
             isPermitted = false;
+            setButtonsState(isPermitted);
+
             return;
         }
-
-        Location companyLocation = new Location("");
-        companyLocation.setLatitude(officeLatitude);
-        companyLocation.setLongitude(officeLongitude);
 
         System.out.printf(
                 "Office location: %s\t%s\n" +
@@ -244,46 +258,20 @@ public class AbsenAct extends AppCompatActivity {
 
         float distance = companyLocation.distanceTo(currentLocation);
 
-        LinearLayout btn_masuk = findViewById(R.id.btn_masuk);
-        LinearLayout btn_keluar = findViewById(R.id.btn_keluar);
-
-        ImageView btn_absen_masuk = findViewById(R.id.btn_absen_masuk);
-        ImageView btn_absen_keluar = findViewById(R.id.btn_absen_keluar);
-
-        TextView txt_btn_masuk = findViewById(R.id.txt_btn_masuk);
-        TextView txt_btn_keluar = findViewById(R.id.txt_btn_keluar);
-
         isPermitted = false;
 
         if (distance > acceptedRadius) {
             System.out.println("Your distance from given office coordinate is: "+ distance +" m");
-
-            btn_masuk.setClickable(false);
-            btn_keluar.setClickable(false);
-
-            btn_masuk.getBackground().setAlpha(200);
-            btn_keluar.getBackground().setAlpha(200);
-            btn_absen_masuk.setAlpha(0.4f);
-            btn_absen_keluar.setAlpha(0.4f);
-            txt_btn_masuk.setAlpha(0.6f);
-            txt_btn_keluar.setAlpha(0.6f);
+            setButtonsState(isPermitted);
 
             return;
         }
 
         isPermitted = true;
 
-        btn_masuk.setClickable(true);
-        btn_keluar.setClickable(true);
+        setButtonsState(isPermitted);
 
         System.out.println("Your distance from given office coordinate is: "+ distance +" m");
-
-        btn_masuk.getBackground().setAlpha(255);
-        btn_keluar.getBackground().setAlpha(255);
-        btn_absen_masuk.setAlpha(1.0f);
-        btn_absen_keluar.setAlpha(1.0f);
-        txt_btn_masuk.setAlpha(1.0f);
-        txt_btn_keluar.setAlpha(1.0f);
     }
 
     private void showMessage(String title, String message) {
@@ -298,6 +286,36 @@ public class AbsenAct extends AppCompatActivity {
                 });
 
         alertDialog.show();
+    }
+
+    private void setButtonsState(boolean enable) {
+        LinearLayout btn_masuk = findViewById(R.id.btn_masuk);
+        LinearLayout btn_keluar = findViewById(R.id.btn_keluar);
+
+        ImageView btn_absen_masuk = findViewById(R.id.btn_absen_masuk);
+        ImageView btn_absen_keluar = findViewById(R.id.btn_absen_keluar);
+
+        TextView txt_btn_masuk = findViewById(R.id.txt_btn_masuk);
+        TextView txt_btn_keluar = findViewById(R.id.txt_btn_keluar);
+
+        if (enable) {
+            btn_masuk.getBackground().setAlpha(255);
+            btn_keluar.getBackground().setAlpha(255);
+            btn_absen_masuk.setAlpha(1.0f);
+            btn_absen_keluar.setAlpha(1.0f);
+            txt_btn_masuk.setAlpha(1.0f);
+            txt_btn_keluar.setAlpha(1.0f);
+        } else {
+            btn_masuk.getBackground().setAlpha(200);
+            btn_keluar.getBackground().setAlpha(200);
+            btn_absen_masuk.setAlpha(0.4f);
+            btn_absen_keluar.setAlpha(0.4f);
+            txt_btn_masuk.setAlpha(0.6f);
+            txt_btn_keluar.setAlpha(0.6f);
+        }
+
+        btn_masuk.setClickable(enable);
+        btn_keluar.setClickable(enable);
     }
 
     private class AbsensiLocationListener implements LocationListener {
@@ -320,11 +338,16 @@ public class AbsenAct extends AppCompatActivity {
         @Override
         public void onProviderEnabled(String provider) {
             System.out.printf("Your GPS is enabled.\n");
+
+            validateStates();
         }
 
         @Override
         public void onProviderDisabled(String provider) {
             System.out.printf("Your GPS is disabled.\n");
+            currentLocation = null;
+
+            validateStates();
         }
     }
 }
