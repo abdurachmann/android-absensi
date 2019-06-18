@@ -1,11 +1,15 @@
 package com.skripsi.absensiwifi.network.service;
 
+import com.google.gson.JsonElement;
 import com.skripsi.absensiwifi.Endpoint;
 import com.skripsi.absensiwifi.model.DataHistory;
 import com.skripsi.absensiwifi.network.response.BaseResponse;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -30,8 +34,6 @@ public interface DataService {
     @POST(Endpoint.API_ABSEN)
     Call<BaseResponse> apiAbsen(
             @Field("nik") String nik,
-            @Field("jenisabsen") String jenisabsen,
-            @Field("jamabsen") String jamabsen,
             @Field("macaddress") String macaddress,
             @Field("latitude") String latitude,
             @Field("longitude") String longitude
@@ -48,4 +50,7 @@ public interface DataService {
             @Field("latitude") String latitude,
             @Field("longitude") String longitude
     );
+
+    @GET(value = Endpoint.API_ABSEN + "/office")
+    Call<ResponseBody> apiOffice();
 }

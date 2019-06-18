@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -15,9 +16,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    
+
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/txtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -46,20 +47,21 @@
         android:layout_marginEnd="49dp"
         android:layout_marginRight="49dp"
         android:src="@drawable/icback_white"
-        app:layout_constraintEnd_toStartOf="@+id/textView2"
+        app:layout_constraintEnd_toStartOf="@+id/txtName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    
+
     <LinearLayout
-        android:id="@+id/linearLayout3"
+        android:id="@+id/btn_sync"
         android:layout_width="326dp"
-        android:layout_height="228dp"
+        android:layout_height="200dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/bg_layout_white"
+        android:background="@drawable/ripple"
+        android:clickable="true"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingLeft="24dp"
@@ -69,12 +71,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
+        app:layout_constraintTop_toBottomOf="@+id/txtName">
 
         <ImageView
             android:id="@+id/btn_sync"
-            android:layout_width="80dp"
-            android:layout_height="143dp"
+            android:layout_width="60dp"
+            android:layout_height="100dp"
             android:src="@drawable/icgps_colored" />
 
         <TextView
@@ -88,51 +90,61 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout4"
+        android:id="@+id/btn_masuk"
         android:layout_width="336dp"
         android:layout_height="118dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/bg_layout_white"
+        android:background="@drawable/ripple"
+        android:clickable="true"
+        android:focusable="true"
         android:gravity="left"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        tools:layout_editor_absoluteX="37dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_sync">
 
         <ImageView
             android:id="@+id/btn_absen_masuk"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_gravity="center"
+            android:clickable="false"
             android:paddingLeft="40dp"
             android:src="@drawable/icmasuk_colored" />
 
         <TextView
+            android:id="@+id/txt_btn_masuk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/mmedium"
             android:layout_gravity="center"
-            android:text="@string/absen_masuk"
+            android:clickable="false"
+            android:fontFamily="@font/mmedium"
             android:paddingLeft="10dp"
+            android:text="@string/absen_masuk"
             android:textColor="@color/blackPrimary"
             android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout5"
+        android:id="@+id/btn_keluar"
         android:layout_width="336dp"
         android:layout_height="118dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/bg_layout_white"
+        android:background="@drawable/ripple"
+        android:clickable="true"
         android:gravity="right"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-        tools:layout_editor_absoluteX="37dp">
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_masuk">
 
         <TextView
+            android:id="@+id/txt_btn_keluar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/mmedium"
             android:layout_gravity="center"
+            android:fontFamily="@font/mmedium"
             android:paddingRight="10dp"
             android:text="@string/absen_keluar"
             android:textColor="@color/blackPrimary"
@@ -162,5 +174,6 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_keluar" />
+
 </android.support.constraint.ConstraintLayout>
