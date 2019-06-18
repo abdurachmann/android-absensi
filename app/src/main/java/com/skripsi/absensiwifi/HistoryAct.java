@@ -3,6 +3,7 @@ package com.skripsi.absensiwifi;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.skripsi.absensiwifi.adapter.DataHistoryAdapter;
 import com.skripsi.absensiwifi.model.DataHistory;
@@ -30,6 +32,8 @@ public class HistoryAct extends AppCompatActivity {
     ImageView btn_back;
     EditText date, date_to;
     DatePickerDialog datePickerDialog;
+    TextView tvNik;
+    TextView tvNama;
 
     private static final String TAG = HistoryAct.class.getSimpleName();
 
@@ -50,6 +54,9 @@ public class HistoryAct extends AppCompatActivity {
         date = findViewById(R.id.date);
         date_to = findViewById(R.id.date_to);
         btn_back = findViewById(R.id.btn_back);
+
+        tvNik = findViewById(R.id.tv_nik);
+        tvNama = findViewById(R.id.tv_nama);
 
         date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,9 +102,9 @@ public class HistoryAct extends AppCompatActivity {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gotohome = new Intent(HistoryAct.this, HomeAct.class);
-                startActivity(gotohome);
-                finish();
+            Intent gotohome = new Intent(HistoryAct.this, HomeAct.class);
+            startActivity(gotohome);
+            finish();
             }
         });
 
@@ -105,14 +112,20 @@ public class HistoryAct extends AppCompatActivity {
         // Get Data from API
         initViews();
 
-        String nik = "P0001";
-
         // Initialization adapter
         adapter = new DataHistoryAdapter(this);
         rvData.setLayoutManager(new LinearLayoutManager(this));
         service = ServiceGenerator.createBaseService(this, DataService.class);
 
         rvData.setAdapter(adapter);
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("USER_ACCESS", Context.MODE_PRIVATE); // 0 - for private mode
+        String nik = pref.getString("nik", "");
+        String nama = pref.getString("nama", "");
+
+        tvNik.setText(nik);
+        tvNama.setText(nama);
+
         loadData(nik);
     }
 

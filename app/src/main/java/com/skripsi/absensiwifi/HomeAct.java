@@ -10,6 +10,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class HomeAct extends AppCompatActivity {
     ImageView btn_absen;
     LinearLayout btn_history, btn_profile;

@@ -12,9 +12,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.skripsi.absensiwifi.network.ServiceGenerator;
 import com.skripsi.absensiwifi.network.response.BaseResponse;
 import com.skripsi.absensiwifi.network.service.DataService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -65,7 +69,7 @@ public class LoginAct extends AppCompatActivity {
         });
     }
 
-    private void Login(String nik, String password) {
+    private void Login(final String nik, String password) {
         Call<BaseResponse> call = service.apiLogin(nik, password);
 
         call.enqueue(new Callback<BaseResponse>() {
@@ -82,11 +86,17 @@ public class LoginAct extends AppCompatActivity {
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("USER_ACCESS", Context.MODE_PRIVATE); // 0 - for private mode
                         SharedPreferences.Editor editor = pref.edit();
 
-                        editor.putString("nik", LoginObject.nik);
-                        editor.putString("nama", LoginObject.nama);
-                        editor.commit();
+                        try {
+                            JSONObject DataLoginObject = new JSONObject(new Gson().toJson(response.body().getData()));
+                            editor.putString("nik", DataLoginObject.getString("nik"));
+                            editor.putString("nama", DataLoginObject.getString("nama"));
+                            editor.commit();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                         Intent intent = new Intent(LoginAct.this, HomeAct.class);
+                        
                         startActivity(intent);
                     } else {
                         Toast.makeText(LoginAct.this, "Identitas tidak ditemukan", Toast.LENGTH_SHORT).show();
