@@ -1,7 +1,7 @@
 package com.skripsi.absensiwifi.network.service;
 
 import com.google.gson.JsonElement;
-import com.skripsi.absensiwifi.Endpoint;
+import com.skripsi.absensiwifi.network.Endpoint;
 import com.skripsi.absensiwifi.model.DataHistory;
 import com.skripsi.absensiwifi.network.response.BaseResponse;
 

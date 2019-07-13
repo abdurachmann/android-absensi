@@ -3,7 +3,7 @@ package com.skripsi.absensiwifi.network;
 import android.content.Context;
 
 import com.skripsi.absensiwifi.BuildConfig;
-import com.skripsi.absensiwifi.Endpoint;
+import com.skripsi.absensiwifi.network.Endpoint;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;

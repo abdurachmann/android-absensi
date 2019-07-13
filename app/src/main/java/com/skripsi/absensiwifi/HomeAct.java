@@ -18,7 +18,7 @@ import org.json.JSONObject;
 public class HomeAct extends AppCompatActivity {
     ImageView btn_absen;
     LinearLayout btn_history, btn_profile;
-    TextView txtName;
+    TextView txtName, txtNIK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,7 @@ public class HomeAct extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         txtName = findViewById(R.id.txtName);
+        txtNIK = findViewById(R.id.txtNIK);
         btn_absen = findViewById(R.id.btn_absen);
         btn_history = findViewById(R.id.btn_history);
         btn_profile = findViewById(R.id.btn_profile);
@@ -58,6 +59,7 @@ public class HomeAct extends AppCompatActivity {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("USER_ACCESS", Context.MODE_PRIVATE); // 0 - for private mode
         String user_name = pref.getString("nama", "");
+        String nik = pref.getString("nik", "");
 
         if (user_name.isEmpty()) {
             // merubah activity ke activity lain
@@ -66,6 +68,15 @@ public class HomeAct extends AppCompatActivity {
             finish();
         } else {
             txtName.setText(user_name);
+        }
+
+        if (nik.isEmpty()){
+            // merubah activity ke activity lain
+            Intent gotologin = new Intent(HomeAct.this, LoginAct.class);
+            startActivity(gotologin);
+            finish();
+        } else {
+            txtNIK.setText(nik);
         }
     }
 }
