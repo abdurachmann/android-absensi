@@ -1,7 +1,7 @@
 package com.skripsi.absensiwifi.network;
 
 public class Endpoint {
-    public static final String API_URL = "http://192.168.43.200/skripsi.absensi/api/";
+    public static final String API_URL = "http://192.168.43.116/skripsi.absensi/api/";
 
     public static final String API_LOGIN = "Login";
     public static final String API_PROFILE = "profile";

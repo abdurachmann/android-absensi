@@ -142,11 +142,10 @@ public class AbsenAct extends AppCompatActivity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("USER_ACCESS", Context.MODE_PRIVATE); // 0 - for private mode
 
         String nik = pref.getString("nik", "");
-        final String jamAbsen = pref.getString("jam absen", "");
         String latitude = String.valueOf(currentLocation.getLatitude());
         String longitude = String.valueOf(currentLocation.getLongitude());
 
-        Call<BaseResponse> call = service.apiAbsen(nik, macAddress, latitude, longitude, isMasuk, jamAbsen);
+        Call<BaseResponse> call = service.apiAbsen(nik, macAddress, latitude, longitude, isMasuk);
 
         call.enqueue(new Callback<BaseResponse>() {
             @Override
@@ -157,7 +156,7 @@ public class AbsenAct extends AppCompatActivity {
                     String returnedResponse = AbsenObject.status;
 
                     if(returnedResponse.trim().equals("true")) {
-                        Toast.makeText(AbsenAct.this, "Berhasil Absen" + jamAbsen, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AbsenAct.this, "Berhasil Absen " + AbsenObject.getMessage(), Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(AbsenAct.this, "Gagal Absen", Toast.LENGTH_SHORT).show();
                     }
