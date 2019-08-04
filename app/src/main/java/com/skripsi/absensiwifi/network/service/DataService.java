@@ -25,6 +25,20 @@ public interface DataService {
             @Field("password") String password
     );
 
+    @FormUrlEncoded
+    @POST(Endpoint.API_RESET)
+    Call<BaseResponse> apiResetPassword(
+            @Field("nik") String nik
+    );
+
+    @FormUrlEncoded
+    @POST(Endpoint.API_CHANGE)
+    Call<BaseResponse> apiChangePassword(
+            @Field("nik") String nik,
+            @Field("passwordlama") String passwordlama,
+            @Field("passwordbaru") String passwordbaru
+    );
+
     @GET(Endpoint.API_PROFILE)
     Call<BaseResponse> apiProfile(
             @Query("nik") String nik

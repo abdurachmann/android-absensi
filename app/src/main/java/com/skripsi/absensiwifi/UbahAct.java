@@ -3,31 +3,42 @@ package com.skripsi.absensiwifi;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.skripsi.absensiwifi.network.ServiceGenerator;
+import com.skripsi.absensiwifi.network.response.BaseResponse;
 import com.skripsi.absensiwifi.network.service.DataService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.text.TextUtils.isEmpty;
 
 public class UbahAct extends AppCompatActivity {
-    ImageView btn_back;
-    Button btn_kirim;
+
     private static final String TAG = UbahAct.class.getSimpleName();
     private DataService service;
-    private EditText pass_lama;
-    private EditText pass_baru;
-    private  EditText confirm_pass;
+
+    private EditText etPasswordLama;
+    private EditText etPasswordBaru;
+    private EditText etConfirmPassword;
+
+    ImageView btnBack;
+    Button btnSubmit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ubah);
 
-        btn_back = findViewById(R.id.btn_back);
-        btn_back.setOnClickListener(new View.OnClickListener() {
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent gotoprofile = new Intent(UbahAct.this, ProfileAct.class);
@@ -36,37 +47,59 @@ public class UbahAct extends AppCompatActivity {
             }
         });
 
-        initListener();
         service = ServiceGenerator.createBaseService(this, DataService.class);
+        initListener();
     }
 
     private void initListener() {
-        pass_lama = findViewById(R.id.pass_lama);
-        pass_baru = findViewById(R.id.pass_baru);
-        confirm_pass = findViewById(R.id.confrim_pass);
-        btn_kirim = findViewById(R.id.btn_kirim);
-        btn_kirim.setOnClickListener(new View.OnClickListener() {
+        etPasswordLama = findViewById(R.id.pass_lama);
+        etPasswordBaru = findViewById(R.id.pass_baru);
+        etConfirmPassword = findViewById(R.id.confrim_pass);
+        btnSubmit = findViewById(R.id.btn_kirim);
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String passwordlama = pass_lama.getText().toString();
-                String passwordbaru = pass_baru.getText().toString();
-                String confirmpassword = confirm_pass.getText().toString();
+            String passwordLama = etPasswordLama.getText().toString();
+            String passwordBaru = etPasswordBaru.getText().toString();
+            String confirmPassword = etConfirmPassword.getText().toString();
 
-                if (isEmpty(passwordlama))
-                    pass_lama.setError("Password tidak boleh kosong");
-                else Kirim(passwordlama, passwordbaru, confirmpassword);
+            if (isEmpty(passwordLama))
+                etPasswordLama.setError("Password tidak boleh kosong");
+            else Submit(passwordLama, passwordBaru, confirmPassword);
 
-                if (isEmpty(passwordbaru))
-                    pass_baru.setError("Masukkan password anda");
-                else Kirim(passwordlama, passwordbaru, confirmpassword);
+            if (isEmpty(passwordBaru))
+                etPasswordBaru.setError("Masukkan password anda");
+            else Submit(passwordLama, passwordBaru, confirmPassword);
 
-                if (isEmpty(confirmpassword))
-                    confirm_pass.setError("Masukkan password anda");
-                else Kirim(passwordlama, passwordbaru, confirmpassword);
+            if (isEmpty(confirmPassword))
+                etConfirmPassword.setError("Masukkan password anda");
+            else Submit(passwordLama, passwordBaru, confirmPassword);
             }
         });
     }
 
-    private void Kirim(String passwordlama, String passwordbaru, String confirmpassword) {
+    private void Submit(String nik, String passwordlama, String passwordbaru) {
+        Call<BaseResponse> call = service.apiChangePassword(nik, passwordlama, passwordbaru);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if(response.code() == 200) {
+                    BaseResponse LoginObject = response.body();
+                    String returnedResponse = LoginObject.status;
+
+                    if(returnedResponse.trim().equals("true")) {
+                        Toast.makeText(UbahAct.this, "Password berhasil dirubah", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(UbahAct.this, "Password tidak berhasil dirubah", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e(TAG + ".error", t.toString());
+            }
+        });
     }
 }
