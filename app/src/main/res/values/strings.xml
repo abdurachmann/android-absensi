@@ -12,4 +12,6 @@
     <string name="history">History</string>
     <string name="tampil">Tampil</string>
     <string name="profile">Profile</string>
+    <string name="ubah_password">Ubah Password</string>
+    <string name="kirim">Kirim</string>
 </resources>

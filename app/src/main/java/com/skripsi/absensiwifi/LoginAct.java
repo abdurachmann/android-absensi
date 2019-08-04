@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -28,6 +29,7 @@ import static android.text.TextUtils.isEmpty;
 
 public class LoginAct extends AppCompatActivity {
 
+    TextView lupa_pass;
     private static final String TAG = LoginAct.class.getSimpleName();
     private DataService service;
 
@@ -39,6 +41,16 @@ public class LoginAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        lupa_pass = findViewById(R.id.lupa_pass);
+        lupa_pass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gotolupa = new Intent(LoginAct.this, LupaAct.class);
+                startActivity(gotolupa);
+                finish();
+            }
+        });
 
         initListener();
         service = ServiceGenerator.createBaseService(this, DataService.class);

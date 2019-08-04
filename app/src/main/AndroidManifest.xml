@@ -3,6 +3,9 @@
     package="com.skripsi.absensiwifi">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfileAct"></activity>
+        <activity android:name=".LupaAct"></activity>
+        <activity android:name=".UbahAct" />
+        <activity android:name=".ProfileAct" />
         <activity android:name=".HistoryAct" />
         <activity android:name=".AbsenAct" />
         <activity android:name=".HomeAct" />
@@ -23,8 +28,5 @@
             </intent-filter>
         </activity>
     </application>
-
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>

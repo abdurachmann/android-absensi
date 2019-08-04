@@ -24,6 +24,7 @@ import retrofit2.Response;
 
 public class ProfileAct extends AppCompatActivity {
     ImageView btn_back;
+    TextView ubah_pass;
 
     private static final String TAG = ProfileAct.class.getSimpleName();
 
@@ -49,6 +50,16 @@ public class ProfileAct extends AppCompatActivity {
             public void onClick(View v) {
                 Intent gotohome = new Intent(ProfileAct.this, HomeAct.class);
                 startActivity(gotohome);
+                finish();
+            }
+        });
+
+        ubah_pass = findViewById(R.id.ubah_pass);
+        ubah_pass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gotoubahpassword = new Intent(ProfileAct.this, UbahAct.class);
+                startActivity(gotoubahpassword);
                 finish();
             }
         });

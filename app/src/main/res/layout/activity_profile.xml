@@ -65,7 +65,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/btn_sync"
+        android:id="@+id/profile"
         android:layout_width="326dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -133,6 +133,26 @@
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/mmedium"
                 android:paddingLeft="20dp"
+                android:text="Alamat"
+                android:textColor="@color/grayprimary" />
+
+            <TextView
+                android:id="@+id/tv_alamat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-20dp"
+                android:fontFamily="@font/mmedium"
+                android:paddingLeft="150dp"
+                android:text="Jl. Terusan Holis"
+                android:textColor="@color/blackPrimary"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/mmedium"
+                android:paddingLeft="20dp"
                 android:text="Tanggal Lahir"
                 android:textColor="@color/grayprimary" />
 
@@ -153,19 +173,54 @@
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/mmedium"
                 android:paddingLeft="20dp"
-                android:text="Alamat"
+                android:text="Jabatan"
                 android:textColor="@color/grayprimary" />
 
             <TextView
-                android:id="@+id/tv_alamat"
+                android:id="@+id/tv_jabatan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-20dp"
                 android:fontFamily="@font/mmedium"
                 android:paddingLeft="150dp"
-                android:text="Jl. Terusan Holis"
+                android:text="Jabatan"
                 android:textColor="@color/blackPrimary"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/ubah_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:fontFamily="@font/mmedium"
+        android:text="@string/ubah_password"
+        android:textColor="@color/bluePrimary"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="248dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:fontFamily="@font/mlight"
+        android:text="@string/company_label"
+        android:textColor="@color/bluePrimary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ubah_pass" />
 </android.support.constraint.ConstraintLayout>
