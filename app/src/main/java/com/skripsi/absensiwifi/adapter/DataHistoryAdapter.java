@@ -87,7 +87,7 @@ public class DataHistoryAdapter extends RecyclerView.Adapter<DataHistoryAdapter.
             String[] timeA = item.getAbsenmasuk().split ( ":" );
             int jamMasuk = Integer.parseInt ( timeA[0].trim() );
 
-            String[] timeB = item.getAbsenmasuk().split ( ":" );
+            String[] timeB = item.getAbsenkeluar().split ( ":" );
             int jamKeluar = Integer.parseInt ( timeB[0].trim() );
 
             if(jamMasuk > 8){
