@@ -71,17 +71,11 @@ public class UbahAct extends AppCompatActivity {
 
             if (isEmpty(passwordLama))
                 etPasswordLama.setError("Password tidak boleh kosong");
-            else Submit(nik, passwordLama, passwordBaru);
-
-            if (isEmpty(passwordBaru))
+            else if (isEmpty(passwordBaru))
                 etPasswordBaru.setError("Masukkan password anda");
-            else Submit(nik, passwordLama, passwordBaru);
-
-            if (isEmpty(confirmPassword))
-                etConfirmPassword.setError("Masukkan password anda");
-            else Submit(nik, passwordLama, passwordBaru);
-
-            if (!passwordBaru.equals(confirmPassword))
+            else if (isEmpty(confirmPassword))
+                etConfirmPassword.setError("Masukkan confirm password");
+            else if (!passwordBaru.equals(confirmPassword))
                 etConfirmPassword.setError("confirm password tidak sama dengan password baru");
             else Submit(nik, passwordLama, passwordBaru);
             }
@@ -94,8 +88,8 @@ public class UbahAct extends AppCompatActivity {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                 if(response.code() == 200) {
-                    BaseResponse ForgetObject = response.body();
-                    String returnedResponse = ForgetObject.status;
+                    BaseResponse ChangeObject = response.body();
+                    String returnedResponse = ChangeObject.status;
 
                     if(returnedResponse.trim().equals("true")) {
                         Toast.makeText(UbahAct.this, "Password berhasil dirubah", Toast.LENGTH_SHORT).show();
