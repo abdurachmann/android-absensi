@@ -81,7 +81,7 @@ public class UbahAct extends AppCompatActivity {
                 etConfirmPassword.setError("Masukkan password anda");
             else Submit(nik, passwordLama, passwordBaru);
 
-            if (passwordBaru !== confirmPassword)
+            if (passwordBaru != confirmPassword)
                 etConfirmPassword.setError("Masukkan baru tidak sama");
             else Submit(nik, passwordLama, passwordBaru);
             }
