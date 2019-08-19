@@ -123,7 +123,7 @@ public class LoginAct extends AppCompatActivity {
                             String nama = DataLoginObject.getString("nama");
                             String macaddressRegistered = DataLoginObject.getString("macaddress");
 
-//                            if (macAddressDevice.equals(macaddressRegistered)) {
+                            if (macAddressDevice.equals(macaddressRegistered)) {
                                 // SharedPreferences Value
                                 Toast.makeText(LoginAct.this, "Berhasil", Toast.LENGTH_SHORT).show();
                                 editor.putString("nik", nik);
@@ -133,9 +133,9 @@ public class LoginAct extends AppCompatActivity {
                                 // Switch Activity
                                 Intent HomeActivity = new Intent(LoginAct.this, HomeAct.class);
                                 startActivity(HomeActivity);
-//                            }else{
-//                                Toast.makeText(LoginAct.this, "Gunakan Handphone Anda!", Toast.LENGTH_SHORT).show();
-//                            }
+                            }else{
+                                Toast.makeText(LoginAct.this, "Gunakan Handphone Anda!", Toast.LENGTH_SHORT).show();
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
