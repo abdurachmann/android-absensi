@@ -1,6 +1,7 @@
 package com.skripsi.absensiwifi.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -9,7 +10,10 @@ import android.widget.TextView;
 import com.skripsi.absensiwifi.R;
 import com.skripsi.absensiwifi.model.DataHistory;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DataHistoryAdapter extends RecyclerView.Adapter<DataHistoryAdapter.ViewHolder> {
@@ -74,6 +78,24 @@ public class DataHistoryAdapter extends RecyclerView.Adapter<DataHistoryAdapter.
             tvTanggal.setText(item.getTanggal());
             tvAbsenMasuk.setText(item.getAbsenmasuk());
             tvAbsenKeluar.setText(item.getAbsenkeluar());
+
+            String[] timeA = item.getAbsenmasuk().split ( ":" );
+            int jamMasuk = Integer.parseInt ( timeA[0].trim() );
+
+            String[] timeB = item.getAbsenmasuk().split ( ":" );
+            int jamKeluar = Integer.parseInt ( timeB[0].trim() );
+
+            if(jamMasuk > 8){
+                tvAbsenMasuk.setTextColor(Color.RED);
+            }else{
+                tvAbsenMasuk.setTextColor(Color.GREEN);
+            }
+
+            if(jamKeluar < 16){
+                tvAbsenKeluar.setTextColor(Color.RED);
+            }else{
+                tvAbsenKeluar.setTextColor(Color.GREEN);
+            }
         }
 
         public void initViews() {
