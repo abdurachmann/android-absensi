@@ -57,8 +57,8 @@ public class LupaAct extends AppCompatActivity {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                 if(response.code() == 200) {
-                    BaseResponse LoginObject = response.body();
-                    String returnedResponse = LoginObject.status;
+                    BaseResponse ResetObject = response.body();
+                    String returnedResponse = ResetObject.status;
 
                     if(returnedResponse.trim().equals("true")) {
                         Toast.makeText(LupaAct.this, "Password berhasil direset", Toast.LENGTH_SHORT).show();

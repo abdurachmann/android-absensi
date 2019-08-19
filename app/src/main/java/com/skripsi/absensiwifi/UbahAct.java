@@ -85,8 +85,8 @@ public class UbahAct extends AppCompatActivity {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                 if(response.code() == 200) {
-                    BaseResponse LoginObject = response.body();
-                    String returnedResponse = LoginObject.status;
+                    BaseResponse ForgetObject = response.body();
+                    String returnedResponse = ForgetObject.status;
 
                     if(returnedResponse.trim().equals("true")) {
                         Toast.makeText(UbahAct.this, "Password berhasil dirubah", Toast.LENGTH_SHORT).show();

@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,6 +35,10 @@ public class HistoryAct extends AppCompatActivity {
     DatePickerDialog datePickerDialog;
     TextView tvNik;
     TextView tvNama;
+    Button show_history;
+
+    String tanggaldari;
+    String tanggalsampai;
 
     private static final String TAG = HistoryAct.class.getSimpleName();
 
@@ -51,8 +56,13 @@ public class HistoryAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("USER_ACCESS", Context.MODE_PRIVATE); // 0 - for private mode
+        final String nik = pref.getString("nik", "");
+        String nama = pref.getString("nama", "");
+
         date = findViewById(R.id.date);
         date_to = findViewById(R.id.date_to);
+        show_history = findViewById(R.id.show_history);
         btn_back = findViewById(R.id.btn_back);
 
         tvNik = findViewById(R.id.tv_nik);
@@ -73,6 +83,7 @@ public class HistoryAct extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         // set day of month, month and year value in the edit text
                         date.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                        tanggaldari = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
                     }
                 }, mYear, mMonth, mDay);
                 datePickerDialog.show();
@@ -93,9 +104,17 @@ public class HistoryAct extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         date_to.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                        tanggalsampai = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
                     }
                 }, mYear, mMonth, mDay);
                 datePickerDialog.show();
+            }
+        });
+
+        show_history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadData(nik, tanggaldari, tanggalsampai);
             }
         });
 
@@ -119,18 +138,16 @@ public class HistoryAct extends AppCompatActivity {
 
         rvData.setAdapter(adapter);
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("USER_ACCESS", Context.MODE_PRIVATE); // 0 - for private mode
-        String nik = pref.getString("nik", "");
-        String nama = pref.getString("nama", "");
-
         tvNik.setText(nik);
         tvNama.setText(nama);
 
-        loadData(nik);
+        loadData(nik, tanggaldari, tanggalsampai);
     }
 
-    private void loadData(String nik) {
-        Call<BaseResponse<List<DataHistory>>> call = service.apiHistory(nik);
+    private void loadData(String nik, String tanggaldari, String tanggalsampai) {
+        adapter.clear();
+
+        Call<BaseResponse<List<DataHistory>>> call = service.apiHistory(nik, tanggaldari, tanggalsampai);
         call.enqueue(new Callback<BaseResponse<List<DataHistory>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<DataHistory>>> call, Response<BaseResponse<List<DataHistory>>> response) {

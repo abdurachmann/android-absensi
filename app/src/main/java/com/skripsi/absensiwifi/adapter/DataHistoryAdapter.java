@@ -62,6 +62,11 @@ public class DataHistoryAdapter extends RecyclerView.Adapter<DataHistoryAdapter.
         return data.size();
     }
 
+    public void clear() {
+        data.clear();
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvTanggal;
