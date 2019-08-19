@@ -23,6 +23,10 @@ import com.skripsi.absensiwifi.network.service.DataService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -92,10 +96,10 @@ public class LoginAct extends AppCompatActivity {
         Call<BaseResponse> call = service.apiLogin(nik, password);
 
         // get device's mac address
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+//        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+//        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 
-        macAddressDevice = wifiInfo.getMacAddress();
+        macAddressDevice = getMacAddr();
         System.out.println("Mac Address: " + macAddressDevice);
 
         call.enqueue(new Callback<BaseResponse>() {
@@ -130,7 +134,7 @@ public class LoginAct extends AppCompatActivity {
                                 Intent HomeActivity = new Intent(LoginAct.this, HomeAct.class);
                                 startActivity(HomeActivity);
                             }else{
-                                Toast.makeText(LoginAct.this, "MAC Address Device tidak sesuai", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginAct.this, "Gunakan Handphone Anda!", Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (JSONException e) {
@@ -147,5 +151,31 @@ public class LoginAct extends AppCompatActivity {
                 Log.e(TAG + ".error", t.toString());
             }
         });
+    }
+
+    public static String getMacAddr() {
+        try {
+            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface nif : all) {
+                if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
+
+                byte[] macBytes = nif.getHardwareAddress();
+                if (macBytes == null) {
+                    return "";
+                }
+
+                StringBuilder res1 = new StringBuilder();
+                for (byte b : macBytes) {
+                    res1.append(String.format("%02X:",b));
+                }
+
+                if (res1.length() > 0) {
+                    res1.deleteCharAt(res1.length() - 1);
+                }
+                return res1.toString();
+            }
+        } catch (Exception ex) {
+        }
+        return "02:00:00:00:00:00";
     }
 }
