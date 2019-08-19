@@ -1,6 +1,8 @@
 package com.skripsi.absensiwifi;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,21 +62,28 @@ public class UbahAct extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("USER_ACCESS", Context.MODE_PRIVATE); // 0 - for private mode
+
+            String nik = pref.getString("nik", "");
             String passwordLama = etPasswordLama.getText().toString();
             String passwordBaru = etPasswordBaru.getText().toString();
             String confirmPassword = etConfirmPassword.getText().toString();
 
             if (isEmpty(passwordLama))
                 etPasswordLama.setError("Password tidak boleh kosong");
-            else Submit(passwordLama, passwordBaru, confirmPassword);
+            else Submit(nik, passwordLama, passwordBaru);
 
             if (isEmpty(passwordBaru))
                 etPasswordBaru.setError("Masukkan password anda");
-            else Submit(passwordLama, passwordBaru, confirmPassword);
+            else Submit(nik, passwordLama, passwordBaru);
 
             if (isEmpty(confirmPassword))
                 etConfirmPassword.setError("Masukkan password anda");
-            else Submit(passwordLama, passwordBaru, confirmPassword);
+            else Submit(nik, passwordLama, passwordBaru);
+
+            if (passwordBaru !== confirmPassword)
+                etConfirmPassword.setError("Masukkan baru tidak sama");
+            else Submit(nik, passwordLama, passwordBaru);
             }
         });
     }
