@@ -57,8 +57,8 @@ public interface DataService {
     @GET(Endpoint.API_HISTORY)
     Call<BaseResponse<List<DataHistory>>> apiHistory(
             @Query("nik") String nik,
-            @Query("tanggaldari") String tanggaldari,
-            @Query("tanggalsampai") String tanggalsampai
+            @Query("bulan") String bulan,
+            @Query("tahun") String tahun
     );
 
     @FormUrlEncoded

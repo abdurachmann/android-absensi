@@ -122,7 +122,7 @@
                 android:text="Hari/ \nTanggal"
                 android:textColor="@color/grayprimary" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/date"
                 android:layout_width="85dp"
                 android:layout_height="40dp"
@@ -136,11 +136,11 @@
                 android:layout_marginTop="-35dp"
                 android:layout_marginLeft="190dp"
                 android:fontFamily="@font/mmedium"
-                android:text="s/d"
+                android:text=""
                 android:textColor="@color/grayprimary"
                 android:textSize="20sp"/>
 
-            <EditText
+            <Spinner
                 android:id="@+id/date_to"
                 android:layout_width="85dp"
                 android:layout_height="40dp"

@@ -10,10 +10,7 @@ import android.widget.TextView;
 import com.skripsi.absensiwifi.R;
 import com.skripsi.absensiwifi.model.DataHistory;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class DataHistoryAdapter extends RecyclerView.Adapter<DataHistoryAdapter.ViewHolder> {
@@ -84,22 +81,26 @@ public class DataHistoryAdapter extends RecyclerView.Adapter<DataHistoryAdapter.
             tvAbsenMasuk.setText(item.getAbsenmasuk());
             tvAbsenKeluar.setText(item.getAbsenkeluar());
 
-            String[] timeA = item.getAbsenmasuk().split ( ":" );
-            int jamMasuk = Integer.parseInt ( timeA[0].trim() );
+            try {
+                String[] timeA = item.getAbsenmasuk().split ( ":" );
+                int jamMasuk = Integer.parseInt ( timeA[0].trim() );
 
-            String[] timeB = item.getAbsenkeluar().split ( ":" );
-            int jamKeluar = Integer.parseInt ( timeB[0].trim() );
+                String[] timeB = item.getAbsenkeluar().split ( ":" );
+                int jamKeluar = Integer.parseInt ( timeB[0].trim() );
 
-            if(jamMasuk > 8){
-                tvAbsenMasuk.setTextColor(Color.RED);
-            }else{
-                tvAbsenMasuk.setTextColor(Color.GREEN);
-            }
+                if(jamMasuk > 8){
+                    tvAbsenMasuk.setTextColor(Color.RED);
+                }else{
+                    tvAbsenMasuk.setTextColor(Color.GREEN);
+                }
 
-            if(jamKeluar < 16){
-                tvAbsenKeluar.setTextColor(Color.RED);
-            }else{
-                tvAbsenKeluar.setTextColor(Color.GREEN);
+                if(jamKeluar < 16){
+                    tvAbsenKeluar.setTextColor(Color.RED);
+                }else{
+                    tvAbsenKeluar.setTextColor(Color.GREEN);
+                }
+            } catch (Exception ex) {
+
             }
         }
 
