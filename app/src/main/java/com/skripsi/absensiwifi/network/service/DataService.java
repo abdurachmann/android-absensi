@@ -68,6 +68,12 @@ public interface DataService {
             @Field("longitude") String longitude
     );
 
+    @GET(Endpoint.API_VERIFY)
+    Call<BaseResponse> apiVerifyPin(
+            @Query("nik") String nik,
+            @Query("pin") String pin
+    );
+
     @GET(value = Endpoint.API_ABSEN + "/office")
     Call<ResponseBody> apiOffice();
 }

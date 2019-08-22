@@ -11,4 +11,6 @@ public class Endpoint {
 
     public static final String API_RESET = "resetpassword";
     public static final String API_CHANGE = "changepassword";
+
+    public static final String API_VERIFY = "verifypin";
 }

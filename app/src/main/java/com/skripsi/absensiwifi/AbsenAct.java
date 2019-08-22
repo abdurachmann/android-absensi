@@ -97,10 +97,19 @@ public class AbsenAct extends AppCompatActivity {
         });
 
         LinearLayout btn_sync = findViewById(R.id.btn_sync);
+//        btn_sync.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getOfficeData();
+//            }
+//        });
+
         btn_sync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getOfficeData();
+                Intent PinActivity = new Intent(AbsenAct.this, PinAct.class);
+                startActivity(PinActivity);
+                finish();
             }
         });
 
@@ -185,7 +194,7 @@ public class AbsenAct extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    private void getOfficeData() {
+    public void getOfficeData() {
         Call<ResponseBody> call = service.apiOffice();
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -216,11 +225,11 @@ public class AbsenAct extends AppCompatActivity {
                     companyLocation.setLatitude(officeLatitude);
                     companyLocation.setLongitude(officeLongitude);
 
-                    Toast.makeText(
-                            AbsenAct.this,
-                            "Sinkron berhasil.",
-                            Toast.LENGTH_SHORT
-                    ).show();
+//                    Toast.makeText(
+//                            AbsenAct.this,
+//                            "Sinkron berhasil.",
+//                            Toast.LENGTH_SHORT
+//                    ).show();
 
                     // validate user location and mac address
                     validateStates();
